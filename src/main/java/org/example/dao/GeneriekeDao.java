@@ -1,6 +1,8 @@
 package org.example.dao;
 
 import org.example.domein.Gebruiker;
+import org.example.exceptions.GeenGebruikerGevondenExceptie;
+import org.example.exceptions.WachtwoordEmailComboKloptNietExceptie;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -79,4 +81,6 @@ public abstract class GeneriekeDao<T> {
         return (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
+
+    public abstract T login(String email, String wachtwoord) throws WachtwoordEmailComboKloptNietExceptie, GeenGebruikerGevondenExceptie;
 }

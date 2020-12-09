@@ -6,9 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.interfaces.Searchable;
 import org.example.util.Bezorgwijze;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedQuery(name = "Gebruiker.findAll", query = "select g from Gebruiker g")
+@NamedQueries({
+        @NamedQuery(name = "Gebruiker.findAll", query = "select g from Gebruiker g"),
+        @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.email like :email")})
 public class Gebruiker implements Searchable {
 
     @Id
@@ -32,26 +35,26 @@ public class Gebruiker implements Searchable {
     private Adres adres;
 
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Enumerated(EnumType.STRING)
     private List<Bezorgwijze> bezorgwijzen;
 
 
     @OneToMany(mappedBy = "eigenaarAdvertentie",
-                cascade = CascadeType.ALL,
-                fetch = FetchType.EAGER)
+            cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Advertentie> aangebodenAdvertenties = new ArrayList<>();
 
-    public Gebruiker(String email, String wachtwoord){
+    public Gebruiker(String email, String wachtwoord) {
         this.email = email;
         this.wachtwoord = wachtwoord;
     }
 
-    public void addBezorgwijze(Bezorgwijze b){
-        if (bezorgwijzen == null){
-            bezorgwijzen = new ArrayList<>();
-        }
+
+    public void addBezorgwijze(Bezorgwijze b) {
         bezorgwijzen.add(b);
     }
-    
+
 
     @Override
     public String allSearchableDataText() {

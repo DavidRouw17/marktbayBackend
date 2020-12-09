@@ -2,8 +2,11 @@ package org.example.resources;
 
 import org.example.dao.GebruikerDao;
 import org.example.dao.GeneriekeDao;
+import org.example.domein.Adres;
+import org.example.domein.Advertentie;
 import org.example.domein.Gebruiker;
 import org.example.interfaces.Searchable;
+import org.example.util.Bezorgwijze;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -62,6 +65,9 @@ public class GebruikersResourceIT {
                 .addClass(GebruikerDao.class)
                 .addClass(Gebruiker.class)
                 .addClass(Searchable.class)
+                .addClass(Bezorgwijze.class)
+                .addClass(Adres.class)
+                .addClass(Advertentie.class)
                 .addAsWebInfResource("persistence.xml", "classes/META-INF/persistence.xml");
 
         return archive;
@@ -139,4 +145,23 @@ public class GebruikersResourceIT {
 
         assertThat(message, nullValue());
     }
+
+    @Test
+    public void testIfLoginWorks(){
+        Client http = ClientBuilder.newClient();
+        Gebruiker g = new Gebruiker("hermanmail", "ww");
+
+        String postedContact = http
+                .target(gebruikersResource)
+                .request().post(Entity.entity(g, MediaType.APPLICATION_JSON), String.class);
+
+        String message = http
+                .target(gebruikersResource)
+                .request().get(String.class);
+
+        System.out.println(message);
+
+        assertThat(message, containsString("hermanmail"));
+    }
+
 }

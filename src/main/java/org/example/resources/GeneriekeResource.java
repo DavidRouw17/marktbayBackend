@@ -1,6 +1,7 @@
 package org.example.resources;
 
 import org.example.dao.GeneriekeDao;
+import org.example.exceptions.GebruikerBestaatAlExceptie;
 
 import javax.ws.rs.*;
 import java.util.Collection;
@@ -20,7 +21,7 @@ public abstract class GeneriekeResource<E> {
     }
 
     @POST
-    public E post(E e) {
+    public E post(E e) throws GebruikerBestaatAlExceptie {
         if (dao.add(e)) {
             return e;
         } else {

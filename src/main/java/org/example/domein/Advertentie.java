@@ -1,6 +1,11 @@
 package org.example.domein;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.util.Bezorgwijze;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,7 +15,9 @@ import java.util.List;
         @NamedQuery(name = "Advertentie.findAll", query = "SELECT a FROM Advertentie a"),
         @NamedQuery(name = "Advertentie.findBySoort", query = "SELECT a FROM Advertentie a where a.soort LIKE :soort")
 })
-@Inheritance(strategy = InheritanceType.JOINED)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Advertentie {
 
     @Id
@@ -28,9 +35,15 @@ public class Advertentie {
     private String bijlage;
 
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bezorgwijze> bezorgwijzen;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     private Gebruiker eigenaarAdvertentie;
+
+    @ManyToOne
+    private Categorie categorie;
+
+
 
 }

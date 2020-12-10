@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import lombok.NoArgsConstructor;
 import org.example.domein.Gebruiker;
 import org.example.exceptions.GeenGebruikerGevondenExceptie;
 import org.example.exceptions.WachtwoordEmailComboKloptNietExceptie;
@@ -12,7 +13,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@NoArgsConstructor
 public abstract class GeneriekeDao<T> {
 
     @PersistenceContext
@@ -82,5 +83,4 @@ public abstract class GeneriekeDao<T> {
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public abstract T login(String email, String wachtwoord) throws WachtwoordEmailComboKloptNietExceptie, GeenGebruikerGevondenExceptie;
 }

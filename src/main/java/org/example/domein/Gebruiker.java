@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @NamedQueries({
         @NamedQuery(name = "Gebruiker.findAll", query = "select g from Gebruiker g"),
-        @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select g from Gebruiker g where g.email like :email")})
+        @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select new org.example.domein.GebruikerDto(g.id, g.voornaam, g.achternaam, g.email, g.wachtwoord) from Gebruiker g where g.email like :email")})
 public class Gebruiker implements Searchable {
 
     @Id
@@ -40,10 +40,9 @@ public class Gebruiker implements Searchable {
     private List<Bezorgwijze> bezorgwijzen;
 
 
-    @OneToMany(mappedBy = "eigenaarAdvertentie",
-            cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eigenaarAdvertentie")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Advertentie> aangebodenAdvertenties = new ArrayList<>();
+    private List<Advertentie> aangebodenAdvertenties;
 
     public Gebruiker(String email, String wachtwoord) {
         this.email = email;
@@ -55,6 +54,13 @@ public class Gebruiker implements Searchable {
         bezorgwijzen.add(b);
     }
 
+    public void addAdvertentie(Advertentie a){
+        if(aangebodenAdvertenties == null){
+            aangebodenAdvertenties = new ArrayList<>();
+        }
+        aangebodenAdvertenties.add(a);
+        a.setEigenaarAdvertentie(this);
+    }
 
     @Override
     public String allSearchableDataText() {

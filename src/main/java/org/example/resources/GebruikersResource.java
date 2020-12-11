@@ -12,12 +12,15 @@ import org.example.exceptions.WachtwoordEmailComboKloptNietExceptie;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Collection;
 import java.util.List;
 
 @Path("/gebruikers")
 
 @Produces(MediaType.APPLICATION_JSON)
 public class GebruikersResource extends GeneriekeResource<Gebruiker> {
+
+
 
     @Inject
     public void setDao(GebruikerDao dao) {
@@ -27,6 +30,7 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
     public GebruikerDao getDao(){
         return (GebruikerDao) super.dao;
     }
+
 
     @POST
     public Gebruiker post(Gebruiker g) throws GebruikerBestaatAlExceptie {

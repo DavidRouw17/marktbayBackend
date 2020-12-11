@@ -12,7 +12,8 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Advertentie.findAll", query = "SELECT a FROM Advertentie a"),
+        @NamedQuery(name = "Advertentie.findAll", query = "SELECT new org.example.domein.AdvertentieDto(a.id, a.titel, a.soort," +
+                "a.prijs, a.omschrijving, a.eigenaarAdvertentie.voornaam, a.eigenaarAdvertentie.achternaam)  FROM Advertentie a"),
         @NamedQuery(name = "Advertentie.findBySoort", query = "SELECT a FROM Advertentie a where a.soort LIKE :soort")
 })
 @Data
@@ -44,6 +45,12 @@ public class Advertentie {
     @ManyToOne
     private Categorie categorie;
 
-
-
+    //constructor voor testen
+    public Advertentie(String titel, String soort, double prijs, String omschrijving, List<Bezorgwijze> bezorgwijzen){
+        this.titel = titel;
+        this.soort = soort;
+        this.prijs = prijs;
+        this.omschrijving = omschrijving;
+        this.bezorgwijzen = bezorgwijzen;
+    }
 }

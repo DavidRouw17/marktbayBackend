@@ -1,11 +1,7 @@
 package org.example.dao;
 
 import lombok.NoArgsConstructor;
-import org.example.domein.Gebruiker;
-import org.example.exceptions.GeenGebruikerGevondenExceptie;
-import org.example.exceptions.WachtwoordEmailComboKloptNietExceptie;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -23,7 +19,7 @@ public abstract class GeneriekeDao<T> {
         return em.find(T(), id);
     }
 
-    public List<T> getByQuery(String q){
+    public List<T> getByQuery(String q) {
         return getAll().stream()
                 .filter(c -> c.toString().contains(q))
                 .collect(Collectors.toList());
@@ -34,8 +30,7 @@ public abstract class GeneriekeDao<T> {
         try {
             em.persist(e);
             return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             // TODO loggen
             return false;
         }
@@ -45,8 +40,7 @@ public abstract class GeneriekeDao<T> {
         try {
             em.merge(e);
             return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             //TODO logger inbouwen
             return false;
         }
@@ -57,8 +51,7 @@ public abstract class GeneriekeDao<T> {
             T e = getById(id);
             em.remove(e);
             return true;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             //TODO logger inbouwen
             return false;
         }
@@ -69,7 +62,7 @@ public abstract class GeneriekeDao<T> {
         return tq.getResultList();
     }
 
-    public int dbSize(){
+    public int dbSize() {
         return getAll().size();
     }
 

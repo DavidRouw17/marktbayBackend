@@ -1,4 +1,4 @@
-package org.example.resources;
+package org.example;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

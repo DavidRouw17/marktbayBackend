@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @NamedQueries({
-        @NamedQuery(name = "Gebruiker.findAll", query = "select g from Gebruiker g"),
+        @NamedQuery(name = "Gebruiker.findAll", query = "select new org.example.domein.GebruikerDto(g.id, g.voornaam, g.achternaam, g.email, g.wachtwoord) from Gebruiker g"),
         @NamedQuery(name = "Gebruiker.zoekOpEmail", query = "select new org.example.domein.GebruikerDto(g.id, g.voornaam, g.achternaam, g.email, g.wachtwoord) from Gebruiker g where g.email like :email")})
 public class Gebruiker implements Searchable {
 

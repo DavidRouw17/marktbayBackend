@@ -63,6 +63,12 @@ public class Gebruiker implements Searchable {
         a.setEigenaarAdvertentie(new GebruikerConverter().convert(this));
     }
 
+    public void updateAdds(){
+        for (Advertentie a : aangebodenAdvertenties) {
+            a.setEigenaarAdvertentie(new GebruikerConverter().convert(this));
+        }
+    }
+
     public void removeAdvertentie(long id){
         for (Advertentie a : aangebodenAdvertenties) {
             if (a.getId() == id){

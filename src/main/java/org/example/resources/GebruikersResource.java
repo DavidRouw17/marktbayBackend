@@ -42,6 +42,18 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
         }
     }
 
+
+    @PUT @Path("{id}")
+    public GebruikerDto put(@PathParam("id") long id, GebruikerDto gebruiker) {
+        Gebruiker g = getDao().getById(id);
+        g.setVoornaam(gebruiker.getVoornaam());
+        g.setAchternaam(gebruiker.getAchternaam());
+        g.setEmail(gebruiker.getEmail());
+        g.updateAdds();
+        getDao().update(g);
+        return gebruiker;
+    }
+
     @Path("/login")
     @POST
     public GebruikerDto inloggen(InlogPoging p) throws GeenGebruikerGevondenExceptie, WachtwoordEmailComboKloptNietExceptie {

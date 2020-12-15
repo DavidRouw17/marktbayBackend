@@ -22,4 +22,6 @@ public class AdvertentieDto {
     public String zoekbareData(){
         return titel + " " + soort + " " + omschrijving;
     }
+
+
 }

@@ -52,10 +52,7 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
     @Path("{id}/advertenties")
     @POST
     public void addAdvertentie(@PathParam("id") long id, Advertentie a) {
-        System.out.println(1);
         Gebruiker g = dao.getById(id);
-        System.out.println(2);
-        System.out.println(a.getBezorgwijzen());
         if (a.getSoort().equals("Dienst")) {
             a.setBezorgwijzen(new ArrayList<Bezorgwijze>(Arrays.asList(Bezorgwijze.DIENST)));
         }
@@ -81,8 +78,6 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
         System.out.println("delete advertentie aangeroepen!");
         Gebruiker g = dao.getById(id);
         g.removeAdvertentie(adid);
-        AdvertentieDao adDao = new AdvertentieDao();
-        adDao.remove(adid);
         dao.update(g);
 
     }

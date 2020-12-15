@@ -5,10 +5,7 @@ import org.example.domein.Advertentie;
 import org.example.domein.AdvertentieDto;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +25,12 @@ public class AdvertentiesResource extends GeneriekeResource<Advertentie> {
     @GET
     public List<AdvertentieDto> getAllDto(@QueryParam("q") String q) {
         return q == null ? getDao().getAllDto() : getDao().getByQueryDto(q);
+    }
+
+    @Path("{id}")
+    @DELETE
+    public void deleteAd(@PathParam("id") long id){
+        getDao().remove(id);
     }
 
 

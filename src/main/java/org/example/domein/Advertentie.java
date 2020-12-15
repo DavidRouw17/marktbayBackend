@@ -62,8 +62,10 @@ public class Advertentie {
 
     public void setEigenaarAdvertentie(GebruikerDto eigenaarAdvertentie) {
         this.eigenaarAdvertentie = eigenaarAdvertentie;
-        this.setEigenaarVoornaam(eigenaarAdvertentie.getVoornaam());
-        this.setEigenaarAchternaam(eigenaarAdvertentie.getAchternaam());
+        if (eigenaarAdvertentie != null) {
+            this.setEigenaarVoornaam(eigenaarAdvertentie.getVoornaam());
+            this.setEigenaarAchternaam(eigenaarAdvertentie.getAchternaam());
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.interfaces.Searchable;
 import org.example.util.Bezorgwijze;
+import org.example.util.GebruikerConverter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -40,7 +41,7 @@ public class Gebruiker implements Searchable {
     private List<Bezorgwijze> bezorgwijzen;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eigenaarAdvertentie")
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Advertentie> aangebodenAdvertenties;
 
@@ -59,7 +60,18 @@ public class Gebruiker implements Searchable {
             aangebodenAdvertenties = new ArrayList<>();
         }
         aangebodenAdvertenties.add(a);
-        a.setEigenaarAdvertentie(this);
+        a.setEigenaarAdvertentie(new GebruikerConverter().convert(this));
+    }
+
+    public void removeAdvertentie(long id){
+        for (Advertentie a : aangebodenAdvertenties) {
+            if (a.getId() == id){
+                aangebodenAdvertenties.remove(a);
+                a.setEigenaarAdvertentie(null);
+                break;
+            }
+        }
+
     }
 
     @Override

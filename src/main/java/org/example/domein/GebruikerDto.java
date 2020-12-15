@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.example.util.Bezorgwijze;
 
+import javax.persistence.Entity;
 import java.util.List;
 
 @AllArgsConstructor

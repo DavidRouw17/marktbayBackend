@@ -1,19 +1,21 @@
 package org.example.resources;
 
+import org.example.dao.AdvertentieDao;
 import org.example.dao.GebruikerDao;
-import org.example.domein.Advertentie;
-import org.example.domein.Gebruiker;
-import org.example.domein.GebruikerDto;
-import org.example.domein.InlogPoging;
+import org.example.domein.*;
 import org.example.exceptions.GebruikerBestaatAlExceptie;
 import org.example.exceptions.GeenGebruikerGevondenExceptie;
 import org.example.exceptions.WachtwoordEmailComboKloptNietExceptie;
+import org.example.util.AdvertentieConverter;
+import org.example.util.Bezorgwijze;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/gebruikers")
 
@@ -21,13 +23,12 @@ import java.util.List;
 public class GebruikersResource extends GeneriekeResource<Gebruiker> {
 
 
-
     @Inject
     public void setDao(GebruikerDao dao) {
         super.dao = dao;
     }
 
-    public GebruikerDao getDao(){
+    public GebruikerDao getDao() {
         return (GebruikerDao) super.dao;
     }
 
@@ -51,16 +52,39 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
     @Path("{id}/advertenties")
     @POST
     public void addAdvertentie(@PathParam("id") long id, Advertentie a) {
+        System.out.println(1);
         Gebruiker g = dao.getById(id);
+        System.out.println(2);
+        System.out.println(a.getBezorgwijzen());
+        if (a.getSoort().equals("Dienst")) {
+            a.setBezorgwijzen(new ArrayList<Bezorgwijze>(Arrays.asList(Bezorgwijze.DIENST)));
+        }
+        if (a.getBezorgwijzen() == null) {
+            a.setBezorgwijzen(g.getBezorgwijzen());
+        }
         g.addAdvertentie(a);
         dao.update(g);
     }
 
     @Path("{id}/advertenties")
     @GET
-    public List<Advertentie> addAdvertentie(@PathParam("id") long id) {
+    public List<AdvertentieDto> addAdvertentie(@PathParam("id") long id) {
+        return dao.getById(id).getAangebodenAdvertenties().stream()
+                .map(a -> new AdvertentieConverter().convert(a))
+                .collect(Collectors.toList());
+    }
+
+    @Path("{id}/advertenties/{adid}")
+    @DELETE
+    public void deleteAdvertentie(@PathParam("id") long id,
+                                  @PathParam("adid") long adid) {
+        System.out.println("delete advertentie aangeroepen!");
         Gebruiker g = dao.getById(id);
-        return g.getAangebodenAdvertenties();
+        g.removeAdvertentie(adid);
+        AdvertentieDao adDao = new AdvertentieDao();
+        adDao.remove(adid);
+        dao.update(g);
+
     }
 
 

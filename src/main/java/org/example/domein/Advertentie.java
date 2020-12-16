@@ -1,6 +1,7 @@
 package org.example.domein;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.util.Bezorgwijze;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Advertentie {
 
     @Id
@@ -60,9 +62,9 @@ public class Advertentie {
         this.bezorgwijzen = bezorgwijzen;
     }
 
-    public void setEigenaarAdvertentie(GebruikerDto eigenaarAdvertentie) {
-        this.eigenaarAdvertentie = eigenaarAdvertentie;
-        if (eigenaarAdvertentie != null) {
+    public void setEigenaarAdvertentie(GebruikerDto eigenaar) {
+        this.eigenaarAdvertentie = eigenaar;
+        if (eigenaar != null) {
             this.setEigenaarVoornaam(eigenaarAdvertentie.getVoornaam());
             this.setEigenaarAchternaam(eigenaarAdvertentie.getAchternaam());
         }

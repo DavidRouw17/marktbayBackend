@@ -20,6 +20,7 @@ public class GebruikerDto {
 
     private List<Bezorgwijze> bezorgwijzen;
 
+    //voor tests
     public GebruikerDto(long id, String voornaam, String achternaam, String email, String wachtwoord) {
         this.id = id;
         this.voornaam = voornaam;
@@ -27,7 +28,7 @@ public class GebruikerDto {
         this.email = email;
         this.wachtwoord = wachtwoord;
     }
-
+    //voor tests
     public GebruikerDto(String voornaam, String achternaam, String email) {
         this.voornaam = voornaam;
         this.achternaam = achternaam;

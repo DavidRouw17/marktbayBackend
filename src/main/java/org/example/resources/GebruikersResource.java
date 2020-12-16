@@ -87,7 +87,6 @@ public class GebruikersResource extends GeneriekeResource<Gebruiker> {
     @DELETE
     public void deleteAdvertentie(@PathParam("id") long id,
                                   @PathParam("adid") long adid) {
-        System.out.println("delete advertentie aangeroepen!");
         Gebruiker g = dao.getById(id);
         g.removeAdvertentie(adid);
         dao.update(g);

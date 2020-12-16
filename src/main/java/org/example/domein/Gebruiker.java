@@ -50,6 +50,22 @@ public class Gebruiker implements Searchable {
         this.wachtwoord = wachtwoord;
     }
 
+    public Gebruiker(long id, String voornaam, String achternaam, String email, String wachtwoord) {
+        this.id = id;
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.email = email;
+        this.wachtwoord = wachtwoord;
+    }
+
+    public Gebruiker(String voornaam, String achternaam, String email, String wachtwoord) {
+
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.email = email;
+        this.wachtwoord = wachtwoord;
+    }
+
 
     public void addBezorgwijze(Bezorgwijze b) {
         bezorgwijzen.add(b);

@@ -4,6 +4,7 @@ import org.example.MainPath;
 import org.example.dao.GebruikerDao;
 import org.example.domein.Advertentie;
 import org.example.domein.Gebruiker;
+import org.example.domein.GebruikerDto;
 import org.example.domein.InlogPoging;
 import org.example.util.Bezorgwijze;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,8 +49,8 @@ public class ResourceIT {
     @Before
     public void setUp() {
         gebruikersResource = deploymentURL + gebruikersUri;
-        dao.add(new Gebruiker("davidmail", "wachtwoord"));
-        dao.add(new Gebruiker("henkmail", "wachtwoord"));
+        dao.add(new Gebruiker( "David", "Rouw", "davidmail", "ww"));
+        dao.add(new Gebruiker( "Henk", "mail", "henkmail", "wachtwoord"));
     }
 
     @After
@@ -205,6 +207,27 @@ public class ResourceIT {
 
         Advertentie aNieuw = g.getAangebodenAdvertenties().get(0);
         assertThat(a.getTitel(), is(aNieuw.getTitel()));
-        assertThat(aNieuw.getEigenaarAdvertentie().getId(), is(1L));
+    }
+
+    @Test
+    public void testIfUpdateUserWorks(){
+        Client http = ClientBuilder.newClient();
+        Advertentie a = new Advertentie("Fiets", "Product", 12, "Mooie fiets", new ArrayList<Bezorgwijze>(Collections.singletonList(Bezorgwijze.AFHALEN)));
+
+        Response r = http.target(gebruikersResource + "/1/advertenties")
+                .request().post(Entity.entity(a, MediaType.APPLICATION_JSON));
+        ;
+
+        Gebruiker g = dao.getById(1L);
+
+        GebruikerDto gd = new GebruikerDto(1L, "h", "p", "nieuwemail", "ww");
+
+        Response rr = http.target(gebruikersResource + gd.getId())
+                .request().put(Entity.entity(gd, MediaType.APPLICATION_JSON));
+
+
+        Advertentie aNieuw = g.getAangebodenAdvertenties().get(0);
+
+        assertThat(a.getTitel(), is(aNieuw.getTitel()));
     }
 }
